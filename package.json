@@ -1,0 +1,10 @@
+{
+  "name": "poof",
+  "description": "Processor decorators",
+  "dependencies": {
+    "validator": "^4.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.0.0"
+  }
+}
