@@ -13,15 +13,24 @@ describe('ValidationError', () => {
 
   it('should throw when not instantiated using `new`', () => {
     should(() => {
-      ValidationError({});
+      ValidationError();
     }).throw(TypeError, {
       message: 'Cannot call a class as a function',
     });
   });
 
+  it('should throw when the fields are missing', () => {
+    should(() => {
+      // eslint-disable-next-line no-new
+      new ValidationError();
+    }).throw(TypeError, {
+      message: 'The `fields` argument is required',
+    });
+  });
+
   it('should have the right name set on the prototype and instance', () => {
     should(ValidationError.prototype.name).be.equal('ValidationError');
-    should(new ValidationError().name).be.equal('ValidationError');
+    should(new ValidationError({}).name).be.equal('ValidationError');
   });
 
   it('should set the fields correctly', () => {

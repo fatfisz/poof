@@ -9,11 +9,8 @@ const ValidationError = require('../dist/validation_error');
 
 
 describe('createProcessor', () => {
-  it('should be a function', () => {
+  it('should be a function that accepts one argument', () => {
     should(createProcessor).be.a.Function();
-  });
-
-  it('should accept one argument', () => {
     should(createProcessor).have.length(1);
   });
 

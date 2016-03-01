@@ -7,11 +7,8 @@ const createProcessorDecorator = require('../dist/create_processor_decorator');
 
 
 describe('createProcessorDecorator', () => {
-  it('should be a function', () => {
+  it('should be a function that accepts one argument', () => {
     should(createProcessorDecorator).be.a.Function();
-  });
-
-  it('should accept one argument', () => {
     should(createProcessorDecorator).have.length(1);
   });
 

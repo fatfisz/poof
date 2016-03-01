@@ -16,6 +16,10 @@ var ValidationError = (function (_Error) {
   function ValidationError(fields) {
     _classCallCheck(this, ValidationError);
 
+    if (!fields) {
+      throw new TypeError('The `fields` argument is required');
+    }
+
     _get(Object.getPrototypeOf(ValidationError.prototype), 'constructor', this).call(this);
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);

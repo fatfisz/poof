@@ -7,11 +7,8 @@ const createValidatorDecorator = require('../dist/create_validator_decorator');
 
 
 describe('createValidatorDecorator', () => {
-  it('should be a function', () => {
+  it('should be a function that accepts two arguments', () => {
     should(createValidatorDecorator).be.a.Function();
-  });
-
-  it('should accept two arguments', () => {
     should(createValidatorDecorator).have.length(2);
   });
 
@@ -20,7 +17,7 @@ describe('createValidatorDecorator', () => {
 
     should(createDecorator).be.a.Function;
 
-    const decorator = createDecorator();
+    const decorator = createDecorator('message');
 
     should(decorator).be.a.Function;
     should(decorator).have.length(3);
@@ -34,6 +31,7 @@ describe('createValidatorDecorator', () => {
     const currentValue = 'current value';
     let next;
     let validatorFn;
+    let createDecorator;
     let processor;
     let getCurrentValue;
     let store;
@@ -44,7 +42,7 @@ describe('createValidatorDecorator', () => {
       };
       next = descriptor.value;
       validatorFn = sinon.stub();
-      const createDecorator = createValidatorDecorator(validatorFn, expected);
+      createDecorator = createValidatorDecorator(validatorFn, expected);
       const decorator = createDecorator('message', 'arg1', 'arg2', 'arg3');
       decorator(target, key, descriptor);
       processor = descriptor.value;
@@ -55,6 +53,14 @@ describe('createValidatorDecorator', () => {
         },
         setError: sinon.spy(),
       };
+    });
+
+    it('should throw when the message is missing', () => {
+      should(() => {
+        createDecorator();
+      }).throw(TypeError, {
+        message: 'The `message` argument is required',
+      });
     });
 
     it('should call validator function with the current value and the arguments', () => {

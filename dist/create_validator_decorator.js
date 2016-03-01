@@ -17,6 +17,10 @@ function createValidatorDecorator(validatorFn, expected) {
       args[_key - 1] = arguments[_key];
     }
 
+    if (!message) {
+      throw new TypeError('The `message` argument is required');
+    }
+
     return (0, _create_processor_decorator2['default'])(function (store) {
       if (validatorFn.apply(undefined, [store.currentValue].concat(args)) === expected) {
         store.setError(message);
