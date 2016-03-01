@@ -45,7 +45,6 @@ describe('assert (validator decorators)', () => {
     'isMultibyte',
     'isNull',
     'isNumeric',
-    'isServerSide',
     'isSurrogatePair',
     'isUppercase',
     'isURL',

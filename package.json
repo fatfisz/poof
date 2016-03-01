@@ -2,7 +2,7 @@
   "name": "poof",
   "description": "Processor decorators",
   "dependencies": {
-    "validator": "^4.8.0"
+    "validator": "^5.1.0"
   },
   "devDependencies": {
     "babel": "^5.8.35",
