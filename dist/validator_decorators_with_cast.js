@@ -23,7 +23,7 @@ Object.keys(_validator2['default']).filter(function (name) {
   return name === 'contains' || name === 'equals' || name === 'matches' || name.slice(0, 2) === 'is';
 }).forEach(function (validatorName) {
   var validatorFn = _validator2['default'][validatorName];
-  assert[validatorName] = (0, _create_validator_decorator2['default'])(validatorFn, false, false);
-  assert.not[validatorName] = (0, _create_validator_decorator2['default'])(validatorFn, true, false);
+  assert[validatorName] = (0, _create_validator_decorator2['default'])(validatorFn, false, true);
+  assert.not[validatorName] = (0, _create_validator_decorator2['default'])(validatorFn, true, true);
 });
 module.exports = exports['default'];

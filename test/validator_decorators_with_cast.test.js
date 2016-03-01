@@ -3,7 +3,7 @@
 const should = require('should/as-function');
 const sinon = require('sinon');
 
-const assert = require('../dist/validator_decorators');
+const assert = require('../dist/validator_decorators_with_cast');
 
 
 describe('assert (validator decorators)', () => {
@@ -86,15 +86,13 @@ describe('assert (validator decorators)', () => {
       };
     });
 
-    it('should throw when the current value is not a string literal', () => {
+    it('should not throw when the current value is not a string literal', () => {
       // eslint-disable-next-line no-new-wrappers
       getCurrentValue.returns(new String(testedValue));
 
       should(() => {
         processor(store);
-      }).throw(TypeError, {
-        message: 'This library (validator.js) validates strings only',
-      });
+      }).not.throw();
     });
 
     it('should not set an error and call `next` when the arguments match', () => {
@@ -143,15 +141,13 @@ describe('assert (validator decorators)', () => {
       };
     });
 
-    it('should throw when the current value is not a string literal', () => {
+    it('should not throw when the current value is not a string literal', () => {
       // eslint-disable-next-line no-new-wrappers
       getCurrentValue.returns(new String(testedValue));
 
       should(() => {
         processor(store);
-      }).throw(TypeError, {
-        message: 'This library (validator.js) validates strings only',
-      });
+      }).not.throw();
     });
 
     it('should not set an error and call `next` when the arguments mismatch', () => {

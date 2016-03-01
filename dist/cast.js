@@ -22,12 +22,12 @@ var _validation_error = require('./validation_error');
 
 var _validation_error2 = _interopRequireDefault(_validation_error);
 
-var _validator_decorators = require('./validator_decorators');
+var _validator_decorators_with_cast = require('./validator_decorators_with_cast');
 
-var _validator_decorators2 = _interopRequireDefault(_validator_decorators);
+var _validator_decorators_with_cast2 = _interopRequireDefault(_validator_decorators_with_cast);
 
 var decoratorsFixed = _extends({}, decorators, {
-  assert: _validator_decorators2['default']
+  assert: _validator_decorators_with_cast2['default']
 });
 
 exports.createProcessor = _create_processor2['default'];

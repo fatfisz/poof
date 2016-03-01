@@ -2,14 +2,14 @@
 
 const should = require('should/as-function');
 
-const poof = require('../dist');
+const poof = require('../dist/cast');
 const createProcessor = require('../dist/create_processor');
 const decorators = require('../dist/decorators');
 const ValidationError = require('../dist/validation_error');
-const validatorDecorators = require('../dist/validator_decorators');
+const validatorDecoratorsWithCast = require('../dist/validator_decorators_with_cast');
 
 
-describe('index', () => {
+describe('index (with cast)', () => {
   it('should have appropriate exports', () => {
     should(poof).have.keys('createProcessor', 'decorators', 'ValidationError');
     should(poof.createProcessor).be.equal(
@@ -17,11 +17,11 @@ describe('index', () => {
       'expected poof.createProcessor to have the right value'
     );
     should(poof.decorators).be.eql(
-      Object.assign({ assert: validatorDecorators }, decorators),
+      Object.assign({ assert: validatorDecoratorsWithCast }, decorators),
       'expected poof.decorators to have the right value'
     );
     should(poof.decorators.assert).be.equal(
-      validatorDecorators,
+      validatorDecoratorsWithCast,
       'expected poof.decorators.assert to have the right value'
     );
     should(poof.ValidationError).be.equal(

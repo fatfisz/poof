@@ -4,23 +4,17 @@ const should = require('should/as-function');
 const sinon = require('sinon');
 
 const decorators = require('../dist/decorators');
-const assert = require('../dist/validator_decorators');
 
 
 describe('decorators', () => {
   it('should have appropriate exports', () => {
     should(decorators).have.keys([
-      'assert',
       'assign',
       'from',
       'ignoreIfUndefined',
       'set',
       'transform',
     ]);
-    should(decorators.assert).be.equal(
-      assert,
-      'expected decorators.assert to have the right value'
-    );
   });
 
   describe('custom decorators', () => {
