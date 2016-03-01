@@ -51,11 +51,6 @@ var Store = (function () {
       data.hasErrors = true;
     }
   }, {
-    key: "hasErrors",
-    value: function hasErrors() {
-      return privateData.get(this).hasErrors;
-    }
-  }, {
     key: "output",
     get: function get() {
       return _extends({}, privateData.get(this).output);
@@ -64,6 +59,11 @@ var Store = (function () {
     key: "errors",
     get: function get() {
       return _extends({}, privateData.get(this).errors);
+    }
+  }, {
+    key: "hasErrors",
+    get: function get() {
+      return privateData.get(this).hasErrors;
     }
   }, {
     key: "currentValue",

@@ -33,7 +33,7 @@ function createProcessor(definition) {
       propertyProcessor(store);
     });
 
-    if (store.hasErrors()) {
+    if (store.hasErrors) {
       throw new _validation_error2['default'](store.errors);
     }
 

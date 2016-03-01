@@ -104,7 +104,11 @@ describe('createProcessor', () => {
     });
 
     it('should throw ValidationError if `store.hasErrors` returns true', () => {
-      restorable.push(sinon.stub(Store.prototype, 'hasErrors', () => true));
+      restorable.push(sinon.stub(Store.prototype, 'hasErrors', {
+        get() {
+          return true;
+        },
+      }));
       restorable.push(sinon.stub(Store.prototype, 'errors', {
         get() {
           return 'test errors';
@@ -120,7 +124,11 @@ describe('createProcessor', () => {
     });
 
     it('should return output if `store.hasErrors` returns false', () => {
-      restorable.push(sinon.stub(Store.prototype, 'hasErrors', () => false));
+      restorable.push(sinon.stub(Store.prototype, 'hasErrors', {
+        get() {
+          return false;
+        },
+      }));
       restorable.push(sinon.stub(Store.prototype, 'output', {
         get() {
           return 'test output';
