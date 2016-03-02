@@ -1,6 +1,28 @@
 {
   "name": "poof",
-  "description": "Processor decorators",
+  "version": "1.0.0-rc1",
+  "description": "Data processing decorators",
+  "main": "dist/index.js",
+  "keywords": [
+    "assert",
+    "decorator",
+    "decorators",
+    "processing",
+    "validate",
+    "validation",
+    "validator"
+  ],
+  "homepage": "https://github.com/fatfisz/poof",
+  "repository": "https://github.com/fatfisz/poof.git",
+  "author": {
+    "name": "FatFisz",
+    "url": "https://github.com/fatfisz"
+  },
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "grunt prepublish",
+    "test": "grunt test"
+  },
   "dependencies": {
     "validator": "^5.1.0"
   },
@@ -17,11 +39,6 @@
     "should": "^8.2.2",
     "should-sinon": "0.0.5",
     "sinon": "^2.0.0-pre"
-  },
-  "main": "dist/index.js",
-  "scripts": {
-    "prepublish": "grunt prepublish",
-    "test": "grunt test"
   },
   "babel": {
     "loose": [
