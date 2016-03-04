@@ -152,6 +152,8 @@ Instances have one property - `fields`, which is an object containing error info
 
 Those contain all validation functions from the validator lib. I will try to keep them up-to-date.
 
+Currently those are: `contains`, `equals`, `isAfter`, `isAlpha`, `isAlphanumeric`, `isAscii`, `isBase64`, `isBefore`, `isBoolean`, `isByteLength`, `isCreditCard`, `isCurrency`, `isDate`, `isDecimal`, `isDivisibleBy`, `isEmail`, `isFloat`, `isFQDN`, `isFullWidth`, `isHalfWidth`, `isHexadecimal`, `isHexColor`, `isIn`, `isInt`, `isIP`, `isISBN`, `isISIN`, `isISO8601`, `isJSON`, `isLength`, `isLowercase`, `isMACAddress`, `isMobilePhone`, `isMongoId`, `isMultibyte`, `isNull`, `isNumeric`, `isSurrogatePair`, `isUppercase`, `isURL`, `isUUID`, `isVariableWidth`, `isWhitelisted`, and `matches`.
+
 The first argument is always a message that can be found in the thrown exception in case the validation failed.
 
 That is followed by other arguments, which are passed to the validation function as the second, third, and so on arguments. The first argument passed is the currently processed value.
