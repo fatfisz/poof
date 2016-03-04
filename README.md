@@ -212,4 +212,4 @@ Add unit tests for any new or changed functionality. Lint and test your code wit
 
 ## License
 
-Copyright (c) 2016 FatFisz. Licensed under the MIT license.
+Copyright (c) 2016 Rafał Ruciński. Licensed under the MIT license.
