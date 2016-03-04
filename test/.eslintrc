@@ -1,7 +1,7 @@
 {
   "extends": "../.eslintrc",
   "parserOptions": {
-    "sourceType": "script",
+    "sourceType": "script"
   },
   "env": {
     "mocha": true
