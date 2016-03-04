@@ -1,7 +1,7 @@
 {
   "name": "poof",
   "version": "1.0.0-rc1",
-  "description": "Data processing decorators",
+  "description": "Simple data processing with decorators",
   "main": "dist/index.js",
   "keywords": [
     "assert",
