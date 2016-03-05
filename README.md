@@ -86,14 +86,14 @@ try {
 }
 ```
 
-So if `request.body` is
+So if `request.body` is:
 ```js
 {
   postId: '507f1f77bcf86cd799439011',
   index: '12',
 }
 ```
-then `result` would be
+then `result` would be:
 ```js
 {
   _id: ObjectID('507f1f77bcf86cd799439011'),
@@ -101,13 +101,13 @@ then `result` would be
 }
 ```
 
-If instead `request.body` is
+If instead `request.body` is:
 ```js
 {
   index: '-1',
 }
 ```
-then you'd get a `ValidationError` with the `fields` property equal
+then you'd get a `ValidationError` with the `fields` property equal to:
 ```js
 {
   _id: 'Missing post id',
