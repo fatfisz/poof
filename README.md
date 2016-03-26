@@ -6,6 +6,10 @@ Simple data processing with decorators
 [![Dependency Status](https://david-dm.org/fatfisz/poof.svg)](https://david-dm.org/fatfisz/poof)
 [![devDependency Status](https://david-dm.org/fatfisz/poof/dev-status.svg)](https://david-dm.org/fatfisz/poof#info=devDependencies)
 
+Poof is a tool for creating data processing functions in a declarative way by utilising an upcoming JS feature - decorators.
+
+It makes use of the awesome [validator](https://www.npmjs.com/package/validator) lib to provide assertion functions. Without it Poof probably wouldn't exist.
+
 ## Getting started
 
 Install the package with this command:
@@ -13,16 +17,17 @@ Install the package with this command:
 npm install poof --save
 ```
 
-## What is Poof?
+Poof makes use of ES6 data structures, e.g. `WeakMap`, so make sure you have those too.
 
-This lib enables you to create a function for processing data.
-Every function processes data in some way, so it may sound like nothing special, and it probably isn't.
-The main difference lies in how you declare what to do with data.
+## Why use Poof?
 
-Before you dig into this deeper - Poof makes use of the awesome [validator](https://www.npmjs.com/package/validator) to provide assertion functions.
-Without it Poof probably wouldn't exist.
+- it lets you describe data processing in a straightforward, declarative way
+- it is especially useful for isomorphic websites - you can declare data validator once and use it both on the client-side and the on the server-side
+- Poof processors are composable - you can simply pass the processing result to another processor, e.g. when you want to separate validation and transforming
 
-Now let's see an example of usage:
+## Basic usage
+
+Poof library has two versions: [`poof`, and `poof/cast`](#the-difference-between-poof-and-poofcast). Both of them have three exports: the [`createProcessor` function](#createprocessorconfig), the [`decorators` object](#decorators) and the [`ValidationError` exception](#validationerror).
 
 ```js
 // First import tools from Poof. The `poof/cast` version additionaly casts
@@ -119,18 +124,21 @@ then you'd get a `ValidationError` with the `fields` property equal to:
 
 ## The difference between poof and poof/cast
 
-The [validator](https://www.npmjs.com/package/validator) library used to make the casting itself before v. 5. Now it instead throws when the passed argument is not a string.
+The [validator](https://www.npmjs.com/package/validator) library used to make the casting by itself before v. 5.
+Now it instead throws when the passed argument is not a string.
 
 The rules of casting are as follows:
 - in case of objects try to use `toString` or return `'[object Object]'`
 - return `''` for `null`, `undefined`, `NaN` and `''`
-- for everything else, use the String function on it (cast to string)
+- else case the value to a string
 
-This is quite useful for parsing request bodies, which usually consist of strings. If some field is missing, then when validating with auto-casting it will assume the value `''`. Because of this `decorators.assert.isNull` covers both empty strings and null values in this case.
+This is quite useful for parsing request bodies, which usually consist of strings.
+Missing fields assume the value of `''` when auto-casting is on.
+Because of this `decorators.assert.isNull` from `poof/cast` covers both empty strings and null values.
 
 So using `poof/cast` where you will be dealing with strings or missing properties spares you from adding more boilerplate (explicit casting).
 
-Be careful! If you use an assertion function on a non-string without autocasting, an exception will be thrown and the processing will end abruptly.
+Warning! If you use an assertion function on a non-string without autocasting, an exception will be thrown and the processing will end abruptly.
 
 ## API
 
