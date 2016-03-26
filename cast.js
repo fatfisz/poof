@@ -1,1 +1,1 @@
-module.exports = require('./dist/cast');
+module.exports = require('./dist/cast.rollup');
