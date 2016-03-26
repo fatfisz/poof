@@ -26,31 +26,27 @@ var Store = (function () {
     });
   }
 
+  Store.prototype.reset = function reset(key) {
+    var data = privateData.get(this);
+    data.currentKey = key;
+    data.currentValue = data.input[key];
+  };
+
+  Store.prototype.getInput = function getInput(key) {
+    return privateData.get(this).input[key];
+  };
+
+  Store.prototype.setOutput = function setOutput(key, value) {
+    privateData.get(this).output[key] = value;
+  };
+
+  Store.prototype.setError = function setError(message) {
+    var data = privateData.get(this);
+    data.errors[data.currentKey] = message;
+    data.hasErrors = true;
+  };
+
   _createClass(Store, [{
-    key: "reset",
-    value: function reset(key) {
-      var data = privateData.get(this);
-      data.currentKey = key;
-      data.currentValue = data.input[key];
-    }
-  }, {
-    key: "getInput",
-    value: function getInput(key) {
-      return privateData.get(this).input[key];
-    }
-  }, {
-    key: "setOutput",
-    value: function setOutput(key, value) {
-      privateData.get(this).output[key] = value;
-    }
-  }, {
-    key: "setError",
-    value: function setError(message) {
-      var data = privateData.get(this);
-      data.errors[data.currentKey] = message;
-      data.hasErrors = true;
-    }
-  }, {
     key: "output",
     get: function get() {
       return _extends({}, privateData.get(this).output);
