@@ -2,7 +2,7 @@
   "name": "poof",
   "version": "1.0.0-rc1",
   "description": "Simple data processing with decorators",
-  "main": "dist/index.rollup.js",
+  "main": "index.js",
   "keywords": [
     "assert",
     "decorator",
@@ -38,6 +38,7 @@
     "grunt-rollup": "^0.6.2",
     "load-grunt-tasks": "^3.4.1",
     "mocha": "^2.4.5",
+    "mockery": "^1.4.1",
     "rollup-plugin-babel": "^1.0.0",
     "should": "^8.3.0",
     "should-sinon": "0.0.5",

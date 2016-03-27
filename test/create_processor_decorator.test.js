@@ -69,7 +69,7 @@ describe('createProcessorDecorator', () => {
       should(prevValue).be.calledWithExactly(store);
     });
 
-    it('should call the previous value if processor doesn\'t return false explicitly', () => {
+    it('should call the previous value if processor doesn\'t return `false` explicitly', () => {
       processor.returns(null);
 
       nextValue(store);
@@ -78,7 +78,7 @@ describe('createProcessorDecorator', () => {
       should(prevValue).be.calledWithExactly(store);
     });
 
-    it('shouldn\'t call the previous value if processor returns false', () => {
+    it('shouldn\'t call the previous value if processor returns `false`', () => {
       processor.returns(false);
 
       nextValue(store);

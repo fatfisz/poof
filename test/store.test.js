@@ -156,7 +156,7 @@ describe('Store', () => {
       should(data.errors).be.eql({
         [testKey]: message,
       });
-      should(data.hasErrors).be.equal(true);
+      should(data.hasErrors).be.true();
       should(data.currentKey).be.equal(testKey);
       should(data.currentValue).be.equal(testValue);
     });

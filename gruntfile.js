@@ -26,8 +26,7 @@ module.exports = function register(grunt) {
           format: 'cjs',
         },
         files: {
-          'dist/index.rollup.js': 'lib/index.js',
-          'dist/cast.rollup.js': 'lib/cast.js',
+          'dist/poof_factory.rollup.js': 'lib/poof_factory.js',
         },
       },
     },
@@ -48,7 +47,10 @@ module.exports = function register(grunt) {
         options: {
           timeout: 500,
         },
-        src: ['test/**/*.test.js'],
+        src: [
+          'test/boot.js',
+          'test/**/*.test.js',
+        ],
       },
     },
   });

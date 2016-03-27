@@ -1,61 +1,52 @@
 'use strict';
 
+const mockery = require('mockery');
 const should = require('should/as-function');
 const sinon = require('sinon');
 
-const createValidatorDecorator = require('../dist/create_validator_decorator');
-
 
 describe('createValidatorDecorator', () => {
+  const toStringResult = 'toString result';
+  let toString;
+  let createProcessorDecorator;
+  let createValidatorDecorator;
+
+  beforeEach(() => {
+    toString = sinon.stub().returns(toStringResult);
+    createProcessorDecorator = sinon.spy();
+
+    mockery.registerMock('validator', {
+      toString,
+    });
+    mockery.registerMock('./create_processor_decorator', createProcessorDecorator);
+
+    createValidatorDecorator = require('../dist/create_validator_decorator');
+  });
+
+  afterEach(() => {
+    mockery.deregisterAll();
+  });
+
   it('should be a function that accepts two arguments', () => {
     should(createValidatorDecorator).be.a.Function();
     should(createValidatorDecorator).have.length(3);
   });
 
-  it('should return a decorator creator', () => {
+  it('should return a function', () => {
     const createDecorator = createValidatorDecorator();
 
     should(createDecorator).be.a.Function;
-
-    const decorator = createDecorator('message');
-
-    should(decorator).be.a.Function;
-    should(decorator).have.length(3);
+    should(createDecorator).have.length(1);
   });
 
-  describe('validator decorator (without cast)', () => {
-    const expected = 'expected';
-    const unexpected = 'unexpected';
-    const target = null;
-    const key = 'test key';
-    const currentValue = 'current value';
-    let next;
-    let validatorFn;
+  describe('decorator creator', () => {
     let createDecorator;
-    let processor;
-    let getCurrentValue;
-    let store;
 
     beforeEach(() => {
-      const descriptor = {
-        value: sinon.spy(),
-      };
-      next = descriptor.value;
-      validatorFn = sinon.stub();
-      createDecorator = createValidatorDecorator(validatorFn, expected, false);
-      const decorator = createDecorator('message', 'arg1', 'arg2', 'arg3');
-      decorator(target, key, descriptor);
-      processor = descriptor.value;
-      getCurrentValue = sinon.stub().returns(currentValue);
-      store = {
-        get currentValue() {
-          return getCurrentValue();
-        },
-        setError: sinon.spy(),
-      };
+      createDecorator = createValidatorDecorator();
     });
 
-    it('should throw when the message is missing', () => {
+    it('should throw if it is missing the first argument', () => {
       should(() => {
         createDecorator();
       }).throw(TypeError, {
@@ -63,121 +54,110 @@ describe('createValidatorDecorator', () => {
       });
     });
 
-    it('should call validator function with the current value and the arguments', () => {
+    it('should return the result of calling `createProcessorDecorator` with a function', () => {
+      createDecorator('message');
+
+      should(createProcessorDecorator).be.calledOnce();
+      should(createProcessorDecorator).be.calledWithExactly(sinon.match.func);
+    });
+  });
+
+  describe('validator decorator (without cast)', () => {
+    const expected = 'expected';
+    const unexpected = 'unexpected';
+    const message = 'message';
+    const currentValue = 'current value';
+    let validatorFn;
+    let processor;
+    let store;
+
+    beforeEach(() => {
+      validatorFn = sinon.stub();
+      const createDecorator = createValidatorDecorator(validatorFn, expected, false);
+      createDecorator(message, 'arg1', 'arg2', 'arg3');
+
+      processor = createProcessorDecorator.args[0][0];
+
+      store = {
+        currentValue,
+        setError: sinon.spy(),
+      };
+    });
+
+    it('should call validator function with the uncasted current value and the arguments', () => {
       processor(store);
 
-      should(getCurrentValue).be.calledOnce();
-
+      should(toString).not.be.called();
       should(validatorFn).be.calledOnce();
       should(validatorFn).be.calledWithExactly(currentValue, 'arg1', 'arg2', 'arg3');
     });
 
-    it('should not cast the current value', () => {
-      // eslint-disable-next-line no-new-wrappers
-      const objectCurrentValue = new String(currentValue);
-      getCurrentValue.returns(objectCurrentValue);
-
-      processor(store);
-
-      should(validatorFn).be.calledWith(objectCurrentValue);
-    });
-
-    it('should call `store.setError` with the message and return false if the validator returned the expected value', () => {
+    it('should call `store.setError` with the message and return `false` if the validator returned the expected value', () => {
       validatorFn.returns(expected);
 
-      processor(store);
+      const result = processor(store);
 
       should(store.setError).be.calledOnce();
-      should(store.setError).be.calledWithExactly('message');
-      should(next).not.be.called(); // This means the returned value was false
+      should(store.setError).be.calledWithExactly(message);
+      should(result).be.false();
     });
 
-    it('shouldn\'t call `store.setError` and not return false if the validator returned an unexpected value', () => {
+    it('shouldn\'t call `store.setError` and not return anything if the validator returned an unexpected value', () => {
       validatorFn.returns(unexpected);
 
-      processor(store);
+      const result = processor(store);
 
       should(store.setError).not.be.called();
-      should(next).be.called(); // This means the returned value was not false
+      should(result).be.undefined();
     });
   });
 
   describe('validator decorator (with cast)', () => {
     const expected = 'expected';
     const unexpected = 'unexpected';
-    const target = null;
-    const key = 'test key';
+    const message = 'message';
     const currentValue = 'current value';
-    let next;
     let validatorFn;
-    let createDecorator;
     let processor;
-    let getCurrentValue;
     let store;
 
     beforeEach(() => {
-      const descriptor = {
-        value: sinon.spy(),
-      };
-      next = descriptor.value;
       validatorFn = sinon.stub();
-      createDecorator = createValidatorDecorator(validatorFn, expected, true);
-      const decorator = createDecorator('message', 'arg1', 'arg2', 'arg3');
-      decorator(target, key, descriptor);
-      processor = descriptor.value;
-      getCurrentValue = sinon.stub().returns(currentValue);
+      const createDecorator = createValidatorDecorator(validatorFn, expected, true);
+      createDecorator('message', 'arg1', 'arg2', 'arg3');
+
+      processor = createProcessorDecorator.args[0][0];
+
       store = {
-        get currentValue() {
-          return getCurrentValue();
-        },
+        currentValue,
         setError: sinon.spy(),
       };
     });
 
-    it('should throw when the message is missing', () => {
-      should(() => {
-        createDecorator();
-      }).throw(TypeError, {
-        message: 'The `message` argument is required',
-      });
-    });
-
-    it('should call validator function with the current value and the arguments', () => {
+    it('should call validator function with the casted current value and the arguments', () => {
       processor(store);
 
-      should(getCurrentValue).be.calledOnce();
-
+      should(toString).be.calledOnce();
+      should(toString).be.calledWithExactly(currentValue);
       should(validatorFn).be.calledOnce();
-      should(validatorFn).be.calledWithExactly(currentValue, 'arg1', 'arg2', 'arg3');
+      should(validatorFn).be.calledWithExactly(toStringResult, 'arg1', 'arg2', 'arg3');
     });
 
-    it('should cast the current value', () => {
-      // eslint-disable-next-line no-new-wrappers
-      const objectCurrentValue = new String(currentValue);
-      getCurrentValue.returns(objectCurrentValue);
-
-      processor(store);
-
-      should(validatorFn).be.calledWith(currentValue);
-    });
-
-    it('should call `store.setError` with the message and return false if the validator returned the expected value', () => {
+    it('should call `store.setError` with the message and return `false` if the validator returned the expected value', () => {
       validatorFn.returns(expected);
 
       processor(store);
 
       should(store.setError).be.calledOnce();
-      should(store.setError).be.calledWithExactly('message');
-      should(next).not.be.called(); // This means the returned value was false
+      should(store.setError).be.calledWithExactly(message);
     });
 
-    it('shouldn\'t call `store.setError` and not return false if the validator returned an unexpected value', () => {
+    it('shouldn\'t call `store.setError` and not return anything if the validator returned an unexpected value', () => {
       validatorFn.returns(unexpected);
 
       processor(store);
 
       should(store.setError).not.be.called();
-      should(next).be.called(); // This means the returned value was not false
     });
   });
 });

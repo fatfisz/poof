@@ -1,14 +1,36 @@
 'use strict';
 
+const mockery = require('mockery');
 const should = require('should/as-function');
 const sinon = require('sinon');
 
-const createProcessor = require('../dist/create_processor');
-const Store = require('../dist/store');
-const ValidationError = require('../dist/validation_error');
-
 
 describe('createProcessor', () => {
+  let createProcessor;
+  let Store;
+  let store;
+  let ValidationError;
+
+  beforeEach(() => {
+    Store = function () {
+      Object.assign(this, store);
+    };
+    Store.prototype.reset = function () {};
+
+    store = {};
+
+    ValidationError = sinon.spy();
+
+    mockery.registerMock('./store', Store);
+    mockery.registerMock('./validation_error', ValidationError);
+
+    createProcessor = require('../dist/create_processor');
+  });
+
+  afterEach(() => {
+    mockery.deregisterAll();
+  });
+
   it('should be a function that accepts one argument', () => {
     should(createProcessor).be.a.Function();
     should(createProcessor).have.length(1);
@@ -22,18 +44,6 @@ describe('createProcessor', () => {
   });
 
   describe('processor', () => {
-    let restorable;
-
-    beforeEach(() => {
-      restorable = [];
-    });
-
-    afterEach(() => {
-      restorable.forEach((method) => {
-        method.restore();
-      });
-    });
-
     it('should only call processors of enumerable properties', () => {
       const definition = {
         first: sinon.stub(),
@@ -73,9 +83,9 @@ describe('createProcessor', () => {
         second: requireResetFor('second'),
         third: requireResetFor('third'),
       };
-      restorable.push(sinon.stub(Store.prototype, 'reset', () => {
+      sinon.stub(Store.prototype, 'reset', () => {
         wasReset = true;
-      }));
+      });
       const processor = createProcessor(definition);
 
       processor({});
@@ -100,37 +110,25 @@ describe('createProcessor', () => {
       should(definition.second).be.calledWithExactly(instanceOfStore);
     });
 
-    it('should throw ValidationError if `store.hasErrors` returns true', () => {
-      restorable.push(sinon.stub(Store.prototype, 'hasErrors', {
-        get() {
-          return true;
-        },
-      }));
-      restorable.push(sinon.stub(Store.prototype, 'errors', {
-        get() {
-          return 'test errors';
-        },
-      }));
+    it('should throw ValidationError if `store.hasErrors` returns `true`', () => {
+      store.hasErrors = true;
+      store.errors = 'test errors';
+
       const processor = createProcessor({});
 
       should(() => {
         processor({});
-      }).throw(ValidationError, {
-        fields: 'test errors',
-      });
+      }).throw(ValidationError);
+
+      should(ValidationError).be.calledOnce();
+      should(ValidationError).be.calledWithNew();
+      should(ValidationError).be.calledWithExactly('test errors');
     });
 
-    it('should return output if `store.hasErrors` returns false', () => {
-      restorable.push(sinon.stub(Store.prototype, 'hasErrors', {
-        get() {
-          return false;
-        },
-      }));
-      restorable.push(sinon.stub(Store.prototype, 'output', {
-        get() {
-          return 'test output';
-        },
-      }));
+    it('should return output if `store.hasErrors` returns `false`', () => {
+      store.hasErrors = false;
+      store.output = 'test output';
+
       const processor = createProcessor({});
       let result;
 

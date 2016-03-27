@@ -188,11 +188,11 @@ var assign = createProcessorDecorator(function (store, key) {
   store.setOutput(key, store.currentValue);
 });
 
-var from = function from(key) {
+function fromDecorator (key) {
   return createProcessorDecorator(function (store) {
     store.currentValue = store.getInput(key);
   });
-};
+}
 
 var ignoreIfUndefined = createProcessorDecorator(function (store) {
   if (typeof store.currentValue === 'undefined') {
@@ -200,26 +200,17 @@ var ignoreIfUndefined = createProcessorDecorator(function (store) {
   }
 });
 
-var set = function set(value) {
+function set (value) {
   return createProcessorDecorator(function (store) {
     store.currentValue = value;
   });
-};
+}
 
-var transform = function transform(transformer) {
+function transform (transformer) {
   return createProcessorDecorator(function (store) {
     store.currentValue = transformer(store.currentValue);
   });
-};
-
-
-var decorators = Object.freeze({
-  assign: assign,
-  from: from,
-  ignoreIfUndefined: ignoreIfUndefined,
-  set: set,
-  transform: transform
-});
+}
 
 function createValidatorDecorator(validatorFn, expected, castToString) {
   return function (message) {
@@ -244,21 +235,35 @@ function createValidatorDecorator(validatorFn, expected, castToString) {
   };
 }
 
-var assert = {
-  not: {}
-};
-Object.keys(validator__default).filter(function (name) {
-  return name === 'contains' || name === 'equals' || name === 'matches' || name.slice(0, 2) === 'is';
-}).forEach(function (validatorName) {
-  var validatorFn = validator__default[validatorName];
-  assert[validatorName] = createValidatorDecorator(validatorFn, false, true);
-  assert.not[validatorName] = createValidatorDecorator(validatorFn, true, true);
-});
+function getValidatorDecorators(castToString) {
+  var assert = {
+    not: {}
+  };
 
-var decoratorsFixed = babelHelpers._extends({}, decorators, {
-  assert: assert
-});
+  Object.keys(validator__default).filter(function (name) {
+    return name === 'contains' || name === 'equals' || name === 'matches' || name.slice(0, 2) === 'is';
+  }).forEach(function (validatorName) {
+    var validatorFn = validator__default[validatorName];
+    assert[validatorName] = createValidatorDecorator(validatorFn, false, castToString);
+    assert.not[validatorName] = createValidatorDecorator(validatorFn, true, castToString);
+  });
 
-exports.createProcessor = createProcessor;
-exports.decorators = decoratorsFixed;
-exports.ValidationError = ValidationError;
+  return assert;
+}
+
+function poofFactory(castToString) {
+  return {
+    createProcessor: createProcessor,
+    decorators: {
+      assign: assign,
+      from: fromDecorator,
+      ignoreIfUndefined: ignoreIfUndefined,
+      set: set,
+      transform: transform,
+      assert: getValidatorDecorators(castToString)
+    },
+    ValidationError: ValidationError
+  };
+}
+
+module.exports = poofFactory;
