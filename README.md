@@ -1,6 +1,6 @@
 # Poof
 
-Simple data processing with decorators
+> Simple data processing with decorators
 
 [![Build Status](https://travis-ci.org/fatfisz/poof.svg?branch=master)](https://travis-ci.org/fatfisz/poof)
 [![Dependency Status](https://david-dm.org/fatfisz/poof.svg)](https://david-dm.org/fatfisz/poof)
