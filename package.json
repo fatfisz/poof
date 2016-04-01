@@ -3,6 +3,12 @@
   "version": "1.0.0-rc2",
   "description": "Simple data processing with decorators",
   "main": "index.js",
+  "files": [
+    "dist/poof_factory.rollup.js",
+    "lib",
+    "cast.js",
+    "index.js"
+  ],
   "keywords": [
     "assert",
     "decorator",
