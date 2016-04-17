@@ -180,9 +180,13 @@ Used to assign the processed value to the output object. When using, it's best t
 
 The initial value for the processed field is taken from the input object using its key. If you want to use a value of a different field instead, use this decorator.
 
+#### decorators.ignoreIf(predicate)
+
+The predicate is called with the processed value. If the result is `true`, then the processing is stopped for that field and it is omitted from the output object.
+
 #### decorators.ignoreIfUndefined
 
-Sometimes you might want to process some data only if it's present. Use this decorator to avoid validation and transforming in case the processed value is `undefined`.
+Sometimes you might want to process some data only if it's present. Use this decorator to avoid validation and transforming in case the processed value is `undefined`. It's equivalent to `decorators.ignoreIf((value) => typeof value === 'undefined')`.
 
 #### decorators.set(value)
 
