@@ -5,7 +5,7 @@ const should = require('should/as-function');
 const sinon = require('sinon');
 
 
-describe('getValidatorDecorators)', () => {
+describe('getValidatorDecorators', () => {
   const castToString = 'cast to string';
   let validator;
   let createValidatorDecorator;
