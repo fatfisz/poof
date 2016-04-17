@@ -1,6 +1,6 @@
 {
   "name": "poof",
-  "version": "1.0.0-rc3",
+  "version": "1.0.0",
   "description": "Simple data processing with decorators",
   "main": "index.js",
   "files": [
