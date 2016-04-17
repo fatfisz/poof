@@ -5,7 +5,7 @@ const should = require('should/as-function');
 const sinon = require('sinon');
 
 
-describe('index', () => {
+describe('Poof Factory', () => {
   let poofFactory;
   let getValidatorDecorators;
 
@@ -15,6 +15,7 @@ describe('index', () => {
     mockery.registerMock('./create_processor', 'create_processor');
     mockery.registerMock('./decorators/assign', 'assign');
     mockery.registerMock('./decorators/from', 'from');
+    mockery.registerMock('./decorators/ignore_if', 'ignore_if');
     mockery.registerMock('./decorators/ignore_if_undefined', 'ignore_if_undefined');
     mockery.registerMock('./decorators/set', 'set');
     mockery.registerMock('./decorators/transform', 'transform');
@@ -43,6 +44,7 @@ describe('index', () => {
       decorators: {
         assign: 'assign',
         from: 'from',
+        ignoreIf: 'ignore_if',
         ignoreIfUndefined: 'ignore_if_undefined',
         set: 'set',
         transform: 'transform',

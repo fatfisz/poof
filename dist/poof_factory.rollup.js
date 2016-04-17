@@ -194,6 +194,14 @@ function fromDecorator (key) {
   });
 }
 
+function ignoreIf (predicate) {
+  return createProcessorDecorator(function (store) {
+    if (predicate(store.currentValue)) {
+      return false;
+    }
+  });
+}
+
 var ignoreIfUndefined = createProcessorDecorator(function (store) {
   if (typeof store.currentValue === 'undefined') {
     return false;
@@ -257,6 +265,7 @@ function poofFactory(castToString) {
     decorators: {
       assign: assign,
       from: fromDecorator,
+      ignoreIf: ignoreIf,
       ignoreIfUndefined: ignoreIfUndefined,
       set: set,
       transform: transform,

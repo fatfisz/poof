@@ -19,6 +19,10 @@ var _decoratorsFrom = require('./decorators/from');
 
 var _decoratorsFrom2 = _interopRequireDefault(_decoratorsFrom);
 
+var _decoratorsIgnore_if = require('./decorators/ignore_if');
+
+var _decoratorsIgnore_if2 = _interopRequireDefault(_decoratorsIgnore_if);
+
 var _decoratorsIgnore_if_undefined = require('./decorators/ignore_if_undefined');
 
 var _decoratorsIgnore_if_undefined2 = _interopRequireDefault(_decoratorsIgnore_if_undefined);
@@ -45,6 +49,7 @@ function poofFactory(castToString) {
     decorators: {
       assign: _decoratorsAssign2['default'],
       from: _decoratorsFrom2['default'],
+      ignoreIf: _decoratorsIgnore_if2['default'],
       ignoreIfUndefined: _decoratorsIgnore_if_undefined2['default'],
       set: _decoratorsSet2['default'],
       transform: _decoratorsTransform2['default'],
