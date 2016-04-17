@@ -18,6 +18,7 @@ describe('validator - exports check', () => {
     'isByteLength',
     'isCreditCard',
     'isCurrency',
+    'isDataURI',
     'isDate',
     'isDecimal',
     'isDivisibleBy',
