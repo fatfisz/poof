@@ -130,7 +130,7 @@ Now it instead throws when the passed argument is not a string.
 The rules of casting are as follows:
 - in case of objects try to use `toString` or return `'[object Object]'`
 - return `''` for `null`, `undefined`, `NaN` and `''`
-- else case the value to a string
+- else cast the value to a string
 
 This is quite useful for parsing request bodies, which usually consist of strings.
 Missing fields assume the value of `''` when auto-casting is on.
