@@ -17,7 +17,7 @@ describe('decorators: set', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    set = require('../../dist/decorators/set');
+    set = require('../../tmp/decorators/set');
 
     store = {
       currentValue,

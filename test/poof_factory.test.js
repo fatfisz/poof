@@ -22,7 +22,7 @@ describe('Poof Factory', () => {
     mockery.registerMock('./get_validator_decorators', getValidatorDecorators);
     mockery.registerMock('./validation_error', 'validation_error');
 
-    poofFactory = require('../dist/poof_factory');
+    poofFactory = require('../tmp/poof_factory');
   });
 
   afterEach(() => {

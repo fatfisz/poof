@@ -1,12 +1,21 @@
 'use strict';
 
+const mockery = require('mockery');
 const should = require('should/as-function');
 const sinon = require('sinon');
 
-const Store = require('../dist/store');
-
 
 describe('Store', () => {
+  let Store;
+
+  beforeEach(() => {
+    Store = require('../tmp/store');
+  });
+
+  afterEach(() => {
+    mockery.deregisterAll();
+  });
+
   it('should export a function that accepts one argument', () => {
     should(Store).be.a.Function();
     should(Store).have.a.length(1);

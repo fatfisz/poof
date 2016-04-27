@@ -33,7 +33,7 @@ describe('getValidatorDecorators', () => {
     mockery.registerMock('validator', validator);
     mockery.registerMock('./create_validator_decorator', createValidatorDecorator);
 
-    getValidatorDecorators = require('../dist/get_validator_decorators');
+    getValidatorDecorators = require('../tmp/get_validator_decorators');
   });
 
   afterEach(() => {

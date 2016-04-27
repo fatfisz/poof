@@ -24,7 +24,7 @@ describe('createProcessor', () => {
     mockery.registerMock('./store', Store);
     mockery.registerMock('./validation_error', ValidationError);
 
-    createProcessor = require('../dist/create_processor');
+    createProcessor = require('../tmp/create_processor');
   });
 
   afterEach(() => {

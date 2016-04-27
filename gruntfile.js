@@ -26,7 +26,7 @@ module.exports = function register(grunt) {
           format: 'cjs',
         },
         files: {
-          'dist/poof_factory.rollup.js': 'lib/poof_factory.js',
+          'dist/poof_factory.js': 'lib/poof_factory.js',
         },
       },
     },
@@ -37,7 +37,7 @@ module.exports = function register(grunt) {
           expand: true,
           cwd: 'lib/',
           src: '**/*.js',
-          dest: 'dist/',
+          dest: 'tmp/',
         }],
       },
     },

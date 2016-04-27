@@ -20,7 +20,7 @@ describe('createValidatorDecorator', () => {
     });
     mockery.registerMock('./create_processor_decorator', createProcessorDecorator);
 
-    createValidatorDecorator = require('../dist/create_validator_decorator');
+    createValidatorDecorator = require('../tmp/create_validator_decorator');
   });
 
   afterEach(() => {

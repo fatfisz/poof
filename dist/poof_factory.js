@@ -1,62 +1,278 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports['default'] = poofFactory;
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var validator = require('validator');
+var validator__default = _interopDefault(validator);
 
-var _create_processor = require('./create_processor');
+var babelHelpers = {};
 
-var _create_processor2 = _interopRequireDefault(_create_processor);
+babelHelpers.inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
 
-var _decoratorsAssign = require('./decorators/assign');
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
 
-var _decoratorsAssign2 = _interopRequireDefault(_decoratorsAssign);
+babelHelpers.createClass = (function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
 
-var _decoratorsFrom = require('./decorators/from');
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+})();
 
-var _decoratorsFrom2 = _interopRequireDefault(_decoratorsFrom);
+babelHelpers._extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
 
-var _decoratorsIgnore_if = require('./decorators/ignore_if');
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
 
-var _decoratorsIgnore_if2 = _interopRequireDefault(_decoratorsIgnore_if);
+  return target;
+};
 
-var _decoratorsIgnore_if_undefined = require('./decorators/ignore_if_undefined');
+babelHelpers.classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+var privateData = new WeakMap();
 
-var _decoratorsIgnore_if_undefined2 = _interopRequireDefault(_decoratorsIgnore_if_undefined);
+var Store = (function () {
+  function Store(input) {
+    babelHelpers.classCallCheck(this, Store);
 
-var _decoratorsSet = require('./decorators/set');
+    privateData.set(this, {
+      input: input,
+      output: {},
+      errors: {},
+      hasErrors: false,
+      currentKey: null,
+      currentValue: null
+    });
+  }
 
-var _decoratorsSet2 = _interopRequireDefault(_decoratorsSet);
+  Store.prototype.reset = function reset(key) {
+    var data = privateData.get(this);
+    data.currentKey = key;
+    data.currentValue = data.input[key];
+  };
 
-var _decoratorsTransform = require('./decorators/transform');
+  Store.prototype.getInput = function getInput(key) {
+    return privateData.get(this).input[key];
+  };
 
-var _decoratorsTransform2 = _interopRequireDefault(_decoratorsTransform);
+  Store.prototype.setOutput = function setOutput(key, value) {
+    privateData.get(this).output[key] = value;
+  };
 
-var _get_validator_decorators = require('./get_validator_decorators');
+  Store.prototype.setError = function setError(message) {
+    var data = privateData.get(this);
+    data.errors[data.currentKey] = message;
+    data.hasErrors = true;
+  };
 
-var _get_validator_decorators2 = _interopRequireDefault(_get_validator_decorators);
-
-var _validation_error = require('./validation_error');
-
-var _validation_error2 = _interopRequireDefault(_validation_error);
-
-function poofFactory(castToString) {
-  return {
-    createProcessor: _create_processor2['default'],
-    decorators: {
-      assign: _decoratorsAssign2['default'],
-      from: _decoratorsFrom2['default'],
-      ignoreIf: _decoratorsIgnore_if2['default'],
-      ignoreIfUndefined: _decoratorsIgnore_if_undefined2['default'],
-      set: _decoratorsSet2['default'],
-      transform: _decoratorsTransform2['default'],
-      assert: (0, _get_validator_decorators2['default'])(castToString)
+  babelHelpers.createClass(Store, [{
+    key: "output",
+    get: function get() {
+      return babelHelpers._extends({}, privateData.get(this).output);
+    }
+  }, {
+    key: "errors",
+    get: function get() {
+      return babelHelpers._extends({}, privateData.get(this).errors);
+    }
+  }, {
+    key: "hasErrors",
+    get: function get() {
+      return privateData.get(this).hasErrors;
+    }
+  }, {
+    key: "currentValue",
+    get: function get() {
+      return privateData.get(this).currentValue;
     },
-    ValidationError: _validation_error2['default']
+    set: function set(value) {
+      privateData.get(this).currentValue = value;
+    }
+  }]);
+  return Store;
+})();
+
+var ValidationError = (function (_Error) {
+  babelHelpers.inherits(ValidationError, _Error);
+
+  function ValidationError(fields) {
+    babelHelpers.classCallCheck(this, ValidationError);
+
+    if (!fields) {
+      throw new TypeError('The `fields` argument is required');
+    }
+
+    _Error.call(this);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    this.fields = fields;
+  }
+
+  return ValidationError;
+})(Error);
+
+ValidationError.prototype.name = 'ValidationError';
+
+function createProcessor(definition) {
+  var processors = Object.keys(definition).map(function (outputKey) {
+    var propertyProcessor = definition[outputKey];
+    return function (store) {
+      // Initially the value is taken from the input object using the same key
+      // as the one that the currently processed property has.
+      store.reset(outputKey);
+      propertyProcessor(store);
+    };
+  });
+
+  return function (input) {
+    var store = new Store(input);
+
+    processors.forEach(function (propertyProcessor) {
+      propertyProcessor(store);
+    });
+
+    if (store.hasErrors) {
+      throw new ValidationError(store.errors);
+    }
+
+    return store.output;
   };
 }
 
-module.exports = exports['default'];
+function createProcessorDecorator(processor) {
+  return function (target, key, descriptor) {
+    var next = descriptor.value;
+
+    descriptor.value = function (store) {
+      if (processor(store, key) !== false) {
+        next(store);
+      }
+    };
+  };
+}
+
+var assign = createProcessorDecorator(function (store, key) {
+  store.setOutput(key, store.currentValue);
+});
+
+function fromDecorator (key) {
+  return createProcessorDecorator(function (store) {
+    store.currentValue = store.getInput(key);
+  });
+}
+
+function ignoreIf (predicate) {
+  return createProcessorDecorator(function (store) {
+    if (predicate(store.currentValue)) {
+      return false;
+    }
+  });
+}
+
+var ignoreIfUndefined = createProcessorDecorator(function (store) {
+  if (typeof store.currentValue === 'undefined') {
+    return false;
+  }
+});
+
+function set (value) {
+  return createProcessorDecorator(function (store) {
+    store.currentValue = value;
+  });
+}
+
+function transform (transformer) {
+  return createProcessorDecorator(function (store) {
+    store.currentValue = transformer(store.currentValue);
+  });
+}
+
+function createValidatorDecorator(validatorFn, expected, castToString) {
+  return function (message) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    if (!message) {
+      throw new TypeError('The `message` argument is required');
+    }
+
+    return createProcessorDecorator(function (store) {
+      var currentValue = store.currentValue;
+
+      var cleanValue = castToString ? validator.toString(currentValue) : currentValue;
+
+      if (validatorFn.apply(undefined, [cleanValue].concat(args)) === expected) {
+        store.setError(message);
+        return false;
+      }
+    });
+  };
+}
+
+function getValidatorDecorators(castToString) {
+  var assert = {
+    not: {}
+  };
+
+  Object.keys(validator__default).filter(function (name) {
+    return name === 'contains' || name === 'equals' || name === 'matches' || name.slice(0, 2) === 'is';
+  }).forEach(function (validatorName) {
+    var validatorFn = validator__default[validatorName];
+    assert[validatorName] = createValidatorDecorator(validatorFn, false, castToString);
+    assert.not[validatorName] = createValidatorDecorator(validatorFn, true, castToString);
+  });
+
+  return assert;
+}
+
+function poofFactory(castToString) {
+  return {
+    createProcessor: createProcessor,
+    decorators: {
+      assign: assign,
+      from: fromDecorator,
+      ignoreIf: ignoreIf,
+      ignoreIfUndefined: ignoreIfUndefined,
+      set: set,
+      transform: transform,
+      assert: getValidatorDecorators(castToString)
+    },
+    ValidationError: ValidationError
+  };
+}
+
+module.exports = poofFactory;

@@ -19,7 +19,7 @@ describe('decorators: from', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    fromDecorator = require('../../dist/decorators/from');
+    fromDecorator = require('../../tmp/decorators/from');
 
     getInput = sinon.stub().returns(getInputResult);
     store = {

@@ -1,12 +1,21 @@
 'use strict';
 
+const mockery = require('mockery');
 const should = require('should/as-function');
 const sinon = require('sinon');
 
-const createProcessorDecorator = require('../dist/create_processor_decorator');
-
 
 describe('createProcessorDecorator', () => {
+  let createProcessorDecorator;
+
+  beforeEach(() => {
+    createProcessorDecorator = require('../tmp/create_processor_decorator');
+  });
+
+  afterEach(() => {
+    mockery.deregisterAll();
+  });
+
   it('should be a function that accepts one argument', () => {
     should(createProcessorDecorator).be.a.Function();
     should(createProcessorDecorator).have.length(1);

@@ -18,7 +18,7 @@ describe('decorators: assign', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    assign = require('../../dist/decorators/assign');
+    assign = require('../../tmp/decorators/assign');
 
     setOutput = sinon.spy();
     store = {

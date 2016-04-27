@@ -15,7 +15,7 @@ describe('decorators: ignoreIfUndefined', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    ignoreIfUndefined = require('../../dist/decorators/ignore_if_undefined');
+    ignoreIfUndefined = require('../../tmp/decorators/ignore_if_undefined');
   });
 
   afterEach(() => {

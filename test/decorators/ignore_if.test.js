@@ -15,7 +15,7 @@ describe('decorators: ignoreIf', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    ignoreIf = require('../../dist/decorators/ignore_if');
+    ignoreIf = require('../../tmp/decorators/ignore_if');
   });
 
   afterEach(() => {

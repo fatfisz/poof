@@ -17,7 +17,7 @@ describe('decorators: transform', () => {
 
     mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
 
-    transform = require('../../dist/decorators/transform');
+    transform = require('../../tmp/decorators/transform');
 
     store = {
       currentValue,
