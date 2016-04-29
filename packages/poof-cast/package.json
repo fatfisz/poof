@@ -28,7 +28,9 @@
     "prepublish": "grunt prepublish",
     "test": "grunt test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "poof-factory": "^2.0.0-rc1"
+  },
   "devDependencies": {
     "eslint": "^2.8.0",
     "grunt": "^1.0.1",
