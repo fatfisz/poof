@@ -3,8 +3,6 @@
 > Simple data processing with decorators
 
 [![Build Status](https://travis-ci.org/fatfisz/poof.svg?branch=master)](https://travis-ci.org/fatfisz/poof)
-[![Dependency Status](https://david-dm.org/fatfisz/poof.svg)](https://david-dm.org/fatfisz/poof)
-[![devDependency Status](https://david-dm.org/fatfisz/poof/dev-status.svg)](https://david-dm.org/fatfisz/poof#info=devDependencies)
 
 Poof is a tool for creating data processing functions in a declarative way by utilising an upcoming JS feature - decorators.
 
