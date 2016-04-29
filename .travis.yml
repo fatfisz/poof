@@ -3,7 +3,11 @@ node_js:
   - "5"
   - "4"
 sudo: false
+install:
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof && npm install
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof-cast && npm install
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof-factory && npm install
 script:
-  - cd packages/poof && npm test && cd ../..
-  - cd packages/poof-cast && npm test && cd ../..
-  - cd packages/poof-factory && npm test && cd ../..
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof && npm test
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof-cast && npm test
+  - cd ${TRAVIS_BUILD_DIR}/packages/poof-factory && npm test
