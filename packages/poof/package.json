@@ -1,0 +1,61 @@
+{
+  "name": "poof",
+  "version": "2.0.0-rc1",
+  "description": "Simple data processing with decorators",
+  "main": "index.js",
+  "jsnext:main": "lib/index.js",
+  "files": [
+    "dist/index.js",
+    "lib/**/*.js"
+  ],
+  "keywords": [
+    "assert",
+    "decorator",
+    "decorators",
+    "processing",
+    "validate",
+    "validation",
+    "validator"
+  ],
+  "homepage": "https://github.com/fatfisz/poof",
+  "repository": "https://github.com/fatfisz/poof.git",
+  "author": {
+    "name": "FatFisz",
+    "url": "https://github.com/fatfisz"
+  },
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "grunt prepublish",
+    "test": "grunt test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^2.5.1",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^5.0.3",
+    "grunt-cli": "^1.1.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-eslint": "^18.1.0",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-rollup": "^0.7.1",
+    "load-grunt-tasks": "^3.4.1",
+    "mocha": "^2.4.5",
+    "mockery": "^1.4.1",
+    "rollup-plugin-babel": "^1.0.0",
+    "should": "^8.3.0",
+    "should-sinon": "0.0.5",
+    "sinon": "^2.0.0-pre"
+  },
+  "babel": {
+    "loose": [
+      "es6.classes",
+      "es6.destructuring",
+      "es6.forOf",
+      "es6.properties.computed",
+      "es6.spread"
+    ],
+    "optional": [
+      "es7.decorators"
+    ]
+  }
+}

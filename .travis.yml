@@ -3,4 +3,7 @@ node_js:
   - "5"
   - "4"
 sudo: false
-script: "npm test"
+script:
+  - cd packages/poof && npm test && cd ../..
+  - cd packages/poof-cast && npm test && cd ../..
+  - cd packages/poof-factory && npm test && cd ../..

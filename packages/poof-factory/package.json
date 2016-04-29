@@ -1,13 +1,12 @@
 {
-  "name": "poof",
-  "version": "1.0.0",
+  "name": "poof-factory",
+  "version": "2.0.0-rc1",
   "description": "Simple data processing with decorators",
   "main": "index.js",
+  "jsnext:main": "lib/poof_factory.js",
   "files": [
-    "dist/poof_factory.rollup.js",
-    "lib",
-    "cast.js",
-    "index.js"
+    "dist/poof_factory.js",
+    "lib/**/*.js"
   ],
   "keywords": [
     "assert",
@@ -33,7 +32,6 @@
     "validator": "^5.2.0"
   },
   "devDependencies": {
-    "babel": "^5.8.38",
     "eslint": "^2.5.1",
     "grunt": "^1.0.1",
     "grunt-babel": "^5.0.3",
