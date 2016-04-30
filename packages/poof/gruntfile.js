@@ -20,7 +20,7 @@ module.exports = function register(grunt) {
       all: {
         options: {
           external: [
-            'validator',
+            'poof-factory',
           ],
           plugins: [
             rollupPluginBabel(),
