@@ -8,29 +8,90 @@ Poof is a tool for creating data processing functions in a declarative way by ut
 
 It makes use of the awesome [validator](https://www.npmjs.com/package/validator) lib to provide assertion functions. Without it Poof probably wouldn't exist.
 
+## Contents
+
+- [Getting started](#getting-started)
+- [Why use Poof?](#why-use-poof)
+- [Example](#example)
+- [Example explained](#example-explained)
+- [The difference between poof and poof-cast](#the-difference-between-poof-and-poof-cast)
+- [API](#api)
+  - [createProcessor(config)](#createprocessorconfig)
+  - [ValidationError](#validationerror)
+  - [decorators](#decorators)
+    - [decorators.assert.xxx and decorators.assert.not.xxx](#decoratorsassertxxx-and-decoratorsassertnotxxx)
+    - [decorators.assign](#decoratorsassign)
+    - [decorators.from(key)](#decoratorsfromkey)
+    - [decorators.ignoreIf(predicate)](#decoratorsignoreifpredicate)
+    - [decorators.ignoreIfUndefined](#decoratorsignoreifundefined)
+    - [decorators.set(value)](#decoratorssetvalue)
+    - [decorators.transform(transformer)](#decoratorstransformtransformer)
+- [Some questions you might have](#some-questions-you-might-have)
+  - [How can I use decorators in my code?](#how-can-i-use-decorators-in-my-code)
+  - [Why the explicit assignment decorator?](#why-the-explicit-assignment-decorator)
+  - [What about nested structures?](#what-about-nested-structures)
+- [Be careful with decorators!](#be-careful-with-decorators)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Getting started
 
-Install the package with this command:
+Install the `poof` package with this command:
 ```shell
 npm install poof --save
 ```
+and/or install the `poof-cast` package with this command:
+```shell
+npm install poof-cast --save
+```
 
-Poof makes use of ES6 data structures, e.g. `WeakMap`, so make sure you have those too.
+Poof makes use of ES6 data structures, e.g. `WeakMap`, but doesn't include any polyfill.
+Make sure you add a polyfill yourself if you want to support older browsers.
 
 ## Why use Poof?
 
 - it lets you describe data processing in a straightforward, declarative way
 - it is especially useful for isomorphic websites - you can declare data validator once and use it both on the client-side and the on the server-side
-- Poof processors are composable - you can simply pass the processing result to another processor, e.g. when you want to separate validation and transforming
+- Poof processors are composable - you can pass the result from one processor to another, e.g. when you want to separate validation and transforming
 
-## Basic usage
+## Example
+```js
+import { createProcessor, decorators, ValidationError } from 'poof-cast';
 
-Poof library has two versions: [`poof`, and `poof/cast`](#the-difference-between-poof-and-poofcast). Both of them have three exports: the [`createProcessor` function](#createprocessorconfig), the [`decorators` object](#decorators) and the [`ValidationError` exception](#validationerror).
+const processIdAndIndex = createProcessor({
+  @decorators.from('postId')
+  @decorators.assert.not.isNull('Missing post id')
+  @decorators.assert.isMongoId('Invalid id')
+  @decorators.transform(ObjectID)
+  @decorators.assign
+  _id() {},
+
+  @decorators.assert.not.isNull('Missing index')
+  @decorators.assert.isInt('Invalid index', { min: 0 })
+  @decorators.transform(Number)
+  @decorators.assign
+  index() {},
+});
+
+try {
+  const result = processIdAndIndex(request.body);
+
+  // Do something with the result...
+} catch(error) {
+  if (error instanceof ValidationError) {
+    // Do something with error messages contained in `error.fields`
+  }
+}
+```
+
+## Example explained
+
+Poof library has two versions: [`poof`, and `poof-cast`](#the-difference-between-poof-and-poofcast). Both of them have three exports: the [`createProcessor` function](#createprocessorconfig), the [`decorators` object](#decorators) and the [`ValidationError` exception](#validationerror).
 
 ```js
-// First import tools from Poof. The `poof/cast` version additionaly casts
+// First import tools from Poof. The `poof-cast` version additionaly casts
 // data to String for assertions. More about it later.
-import { createProcessor, decorators, ValidationError } from 'poof/cast';
+import { createProcessor, decorators, ValidationError } from 'poof-cast';
 
 // The `createProcessor` function returns a processor based on the passed
 // config object.
@@ -83,7 +144,6 @@ try {
   const result = processIdAndIndex(request.body);
 
   // Do something with the result...
-  ...
 } catch(error) {
   if (error instanceof ValidationError) {
     // Do something with error messages contained in `error.fields`
@@ -120,27 +180,17 @@ then you'd get a `ValidationError` with the `fields` property equal to:
 }
 ```
 
-## The difference between poof and poof/cast
+## The difference between poof and poof-cast
 
-The [validator](https://www.npmjs.com/package/validator) library used to make the casting by itself before v. 5.
-Now it instead throws when the passed argument is not a string.
+While `poof` passes processed data for asserts without change, `poof-cast` casts it to string beforehand. The casting works the same as default JS string casting, with this exception: `null`, `undefined`, and `NaN` become `''` (empty string).
 
-The rules of casting are as follows:
-- in case of objects try to use `toString` or return `'[object Object]'`
-- return `''` for `null`, `undefined`, `NaN` and `''`
-- else cast the value to a string
+This is quite useful for parsing request bodies which usually consist of strings - missing fields assume the value of `''` when auto-casting is on. Because of this `decorators.assert.isNull` from `poof-cast` can be used to check both for field presence and whether the value is a non-empty string. This of course reduces otherwise necessary boilerplate code.
 
-This is quite useful for parsing request bodies, which usually consist of strings.
-Missing fields assume the value of `''` when auto-casting is on.
-Because of this `decorators.assert.isNull` from `poof/cast` covers both empty strings and null values.
-
-So using `poof/cast` where you will be dealing with strings or missing properties spares you from adding more boilerplate (explicit casting).
-
-Warning! If you use an assertion function on a non-string without autocasting, an exception will be thrown and the processing will end abruptly.
+The [validator](https://www.npmjs.com/package/validator) library used to make the casting by itself before v. 5. Now it instead throws when the passed argument is not a string. Those exceptions can be thrown when using `poof` (without casting), so be careful when using that version.
 
 ## API
 
-Both `poof` and `poof/cast` export:
+Both `poof` and `poof-cast` export:
 
 ### createProcessor(config)
 
@@ -166,7 +216,7 @@ The first argument is always a message that can be found in the thrown exception
 
 That is followed by other arguments, which are passed to the validation function as the second, third, and so on arguments. The first argument passed is the currently processed value.
 
-So for example if you use `@decorators.assert.equals('Is different', 'expected')` and the current value is `'unexpected'`, the function call will be `equals('unexpected', 'expected')`. If that returns `false`, `'Is different'` will be used as the error message and the validation for that field will not proceed.
+So for example for `@decorators.assert.equals('Is different', 'expected')` the arguments passed to the `equals` validator will be the current value and `'expected'`, and if the currently processed value is different from `'expected'`, the error message for this field will be set to `'Is different'`.
 
 `decorators.assert.not` works almost the same, only the validation fails if the function returns `true`.
 
@@ -206,11 +256,7 @@ When I started creating what later became Poof I didn't always want to have all 
 
 ### What about nested structures?
 
-This was supposed to be a simple lib, and I didn't have a need to support nested structures with it. I might do it someday.
-
-### Why bother doing this?
-
-It was a bit of an experiment - to do validation with decorators. It turned out quite nice, so why not share.
+This was supposed to be a simple lib, and I didn't have a need to support nested structures with it. I might do it someday and I'm open to suggestions/PRs.
 
 ## Be careful with decorators!
 
