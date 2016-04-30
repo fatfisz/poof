@@ -32,7 +32,8 @@
     "poof-factory": "^2.0.0-rc1"
   },
   "devDependencies": {
-    "eslint": "^2.8.0",
+    "eslint": "^2.9.0",
+    "eslint-config-fatfisz": "^2.9.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^5.0.3",
     "grunt-cli": "^1.2.0",
