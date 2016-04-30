@@ -18,7 +18,7 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
 - [API](#api)
   - [createProcessor(config)](#createprocessorconfig)
   - [decorators](#decorators)
-    - [decorators.assert.xxx and decorators.assert.not.xxx](#decoratorsassertxxx-and-decoratorsassertnotxxx)
+    - [decorators.assert.method and decorators.assert.not.method](#decoratorsassertmethod-and-decoratorsassertnotmethod)
     - [decorators.assign](#decoratorsassign)
     - [decorators.from(key)](#decoratorsfromkey)
     - [decorators.ignoreIf(predicate)](#decoratorsignoreifpredicate)
@@ -92,7 +92,7 @@ try {
 
 ## Example explained
 
-Poof library has two versions: [`poof`, and `poof-cast`](#the-difference-between-poof-and-poofcast). Both of them have two exports: the [`createProcessor` function](#createprocessorconfig) and the [`decorators` object](#decorators).
+Poof library has two versions: [`poof`, and `poof-cast`](#the-difference-between-poof-and-poof-cast). Both of them have two exports: the [`createProcessor` function](#createprocessorconfig) and the [`decorators` object](#decorators).
 
 ```js
 // First import the FieldValidationError and also tools from Poof. The
@@ -208,11 +208,11 @@ The processor either returns an output object or throws `FieldValidationError` i
 
 ### decorators
 
-#### decorators.assert.xxx and decorators.assert.not.xxx
+#### decorators.assert.method and decorators.assert.not.method
 
-Those contain all validation functions from the validator lib. I will try to keep them up-to-date.
+Those contain all validation functions from the validator lib: `contains`, `equals`, `isAfter`, `isAlpha`, `isAlphanumeric`, `isAscii`, `isBase64`, `isBefore`, `isBoolean`, `isByteLength`, `isCreditCard`, `isCurrency`, `isDataURI`, `isDate`, `isDecimal`, `isDivisibleBy`, `isEmail`, `isFloat`, `isFQDN`, `isFullWidth`, `isHalfWidth`, `isHexadecimal`, `isHexColor`, `isIn`, `isInt`, `isIP`, `isISBN`, `isISIN`, `isISO8601`, `isJSON`, `isLength`, `isLowercase`, `isMACAddress`, `isMobilePhone`, `isMongoId`, `isMultibyte`, `isNull`, `isNumeric`, `isSurrogatePair`, `isUppercase`, `isURL`, `isUUID`, `isVariableWidth`, `isWhitelisted`, and `matches`.
 
-Currently those are: `contains`, `equals`, `isAfter`, `isAlpha`, `isAlphanumeric`, `isAscii`, `isBase64`, `isBefore`, `isBoolean`, `isByteLength`, `isCreditCard`, `isCurrency`, `isDataURI`, `isDate`, `isDecimal`, `isDivisibleBy`, `isEmail`, `isFloat`, `isFQDN`, `isFullWidth`, `isHalfWidth`, `isHexadecimal`, `isHexColor`, `isIn`, `isInt`, `isIP`, `isISBN`, `isISIN`, `isISO8601`, `isJSON`, `isLength`, `isLowercase`, `isMACAddress`, `isMobilePhone`, `isMongoId`, `isMultibyte`, `isNull`, `isNumeric`, `isSurrogatePair`, `isUppercase`, `isURL`, `isUUID`, `isVariableWidth`, `isWhitelisted`, and `matches`.
+*The validator methods will be updated if necessary, but the new ones should be auto-detected in most cases.*
 
 The first argument is always a message that can be found in the thrown exception in case the validation failed.
 
