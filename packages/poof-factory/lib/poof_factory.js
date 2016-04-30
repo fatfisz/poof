@@ -6,7 +6,6 @@ import ignoreIfUndefined from './decorators/ignore_if_undefined';
 import set from './decorators/set';
 import transform from './decorators/transform';
 import getValidatorDecorators from './get_validator_decorators';
-import ValidationError from './validation_error';
 
 
 export default function poofFactory(castToString) {
@@ -21,6 +20,5 @@ export default function poofFactory(castToString) {
       transform,
       assert: getValidatorDecorators(castToString),
     },
-    ValidationError,
   };
 }

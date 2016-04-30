@@ -2,26 +2,11 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var FieldValidationError = _interopDefault(require('field-validation-error'));
 var validator = require('validator');
 var validator__default = _interopDefault(validator);
 
 var babelHelpers = {};
-
-babelHelpers.inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
 
 babelHelpers.createClass = (function () {
   function defineProperties(target, props) {
@@ -123,29 +108,6 @@ var Store = (function () {
   return Store;
 })();
 
-var ValidationError = (function (_Error) {
-  babelHelpers.inherits(ValidationError, _Error);
-
-  function ValidationError(fields) {
-    babelHelpers.classCallCheck(this, ValidationError);
-
-    if (!fields) {
-      throw new TypeError('The `fields` argument is required');
-    }
-
-    _Error.call(this);
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
-
-    this.fields = fields;
-  }
-
-  return ValidationError;
-})(Error);
-
-ValidationError.prototype.name = 'ValidationError';
-
 function createProcessor(definition) {
   var processors = Object.keys(definition).map(function (outputKey) {
     var propertyProcessor = definition[outputKey];
@@ -165,7 +127,7 @@ function createProcessor(definition) {
     });
 
     if (store.hasErrors) {
-      throw new ValidationError(store.errors);
+      throw new FieldValidationError(store.errors);
     }
 
     return store.output;
@@ -270,8 +232,7 @@ function poofFactory(castToString) {
       set: set,
       transform: transform,
       assert: getValidatorDecorators(castToString)
-    },
-    ValidationError: ValidationError
+    }
   };
 }
 

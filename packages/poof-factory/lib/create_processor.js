@@ -1,5 +1,6 @@
+import FieldValidationError from 'field-validation-error';
+
 import Store from './store';
-import ValidationError from './validation_error';
 
 
 export default function createProcessor(definition) {
@@ -22,7 +23,7 @@ export default function createProcessor(definition) {
     });
 
     if (store.hasErrors) {
-      throw new ValidationError(store.errors);
+      throw new FieldValidationError(store.errors);
     }
 
     return store.output;

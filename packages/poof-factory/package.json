@@ -34,6 +34,7 @@
   "devDependencies": {
     "eslint": "^2.9.0",
     "eslint-config-fatfisz": "^2.9.0",
+    "field-validation-error": "^1.0.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^5.0.3",
     "grunt-cli": "^1.2.0",
@@ -48,6 +49,9 @@
     "should": "^8.3.1",
     "should-sinon": "0.0.5",
     "sinon": "^2.0.0-pre"
+  },
+  "peerDependencies": {
+    "field-validation-error": "^1.0.0"
   },
   "babel": {
     "loose": [

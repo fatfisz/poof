@@ -6,10 +6,10 @@ const sinon = require('sinon');
 
 
 describe('createProcessor', () => {
-  let createProcessor;
+  let FieldValidationError;
   let Store;
   let store;
-  let ValidationError;
+  let createProcessor;
 
   beforeEach(() => {
     Store = function () {
@@ -19,10 +19,10 @@ describe('createProcessor', () => {
 
     store = {};
 
-    ValidationError = sinon.spy();
+    FieldValidationError = sinon.spy();
 
+    mockery.registerMock('field-validation-error', FieldValidationError);
     mockery.registerMock('./store', Store);
-    mockery.registerMock('./validation_error', ValidationError);
 
     createProcessor = require('../tmp/create_processor');
   });
@@ -110,7 +110,7 @@ describe('createProcessor', () => {
       should(definition.second).be.calledWithExactly(instanceOfStore);
     });
 
-    it('should throw ValidationError if `store.hasErrors` returns `true`', () => {
+    it('should throw FieldValidationError if `store.hasErrors` returns `true`', () => {
       store.hasErrors = true;
       store.errors = 'test errors';
 
@@ -118,11 +118,11 @@ describe('createProcessor', () => {
 
       should(() => {
         processor({});
-      }).throw(ValidationError);
+      }).throw(FieldValidationError);
 
-      should(ValidationError).be.calledOnce();
-      should(ValidationError).be.calledWithNew();
-      should(ValidationError).be.calledWithExactly('test errors');
+      should(FieldValidationError).be.calledOnce();
+      should(FieldValidationError).be.calledWithNew();
+      should(FieldValidationError).be.calledWithExactly('test errors');
     });
 
     it('should return output if `store.hasErrors` returns `false`', () => {

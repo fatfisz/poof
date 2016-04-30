@@ -20,7 +20,6 @@ describe('Poof Factory', () => {
     mockery.registerMock('./decorators/set', 'set');
     mockery.registerMock('./decorators/transform', 'transform');
     mockery.registerMock('./get_validator_decorators', getValidatorDecorators);
-    mockery.registerMock('./validation_error', 'validation_error');
 
     poofFactory = require('../tmp/poof_factory');
   });
@@ -38,7 +37,7 @@ describe('Poof Factory', () => {
     const castToString = 'cast to string';
     const poof = poofFactory(castToString);
 
-    should(poof).have.keys('createProcessor', 'decorators', 'ValidationError');
+    should(poof).have.keys('createProcessor', 'decorators');
     should(poof).be.eql({
       createProcessor: 'create_processor',
       decorators: {
@@ -50,7 +49,6 @@ describe('Poof Factory', () => {
         transform: 'transform',
         assert: 'validator_decorators',
       },
-      ValidationError: 'validation_error',
     });
   });
 });
