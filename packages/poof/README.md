@@ -19,7 +19,6 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
 - [The difference between poof and poof-cast](#the-difference-between-poof-and-poof-cast)
 - [API](#api)
   - [createProcessor(config)](#createprocessorconfig)
-  - [ValidationError](#validationerror)
   - [decorators](#decorators)
     - [decorators.assert.xxx and decorators.assert.not.xxx](#decoratorsassertxxx-and-decoratorsassertnotxxx)
     - [decorators.assign](#decoratorsassign)
@@ -32,6 +31,7 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
   - [How can I use decorators in my code?](#how-can-i-use-decorators-in-my-code)
   - [Why the explicit assignment decorator?](#why-the-explicit-assignment-decorator)
   - [What about nested structures?](#what-about-nested-structures)
+  - [Why is the field error exception a separate package?](#why-is-the-field-error-exception-a-separate-package)
 - [Be careful with decorators!](#be-careful-with-decorators)
 - [Contributing](#contributing)
 - [License](#license)
@@ -40,12 +40,16 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
 
 Install the `poof` package with this command:
 ```shell
-npm install poof --save
+npm install poof field-validation-error --save
 ```
 and/or install the `poof-cast` package with this command:
 ```shell
-npm install poof-cast --save
+npm install poof-cast field-validation-error -save
 ```
+
+`field-validation-error` is a peer dependency of both `poof` packages.
+
+### ES6 Data Structures
 
 Poof makes use of ES6 data structures, e.g. `WeakMap`, but doesn't include any polyfill.
 Make sure you add a polyfill yourself if you want to support older browsers.
@@ -57,8 +61,10 @@ Make sure you add a polyfill yourself if you want to support older browsers.
 - Poof processors are composable - you can pass the result from one processor to another, e.g. when you want to separate validation and transforming
 
 ## Example
+
 ```js
-import { createProcessor, decorators, ValidationError } from 'poof-cast';
+import FieldValidationError from 'field-validation-error';
+import { createProcessor, decorators } from 'poof-cast';
 
 const processIdAndIndex = createProcessor({
   @decorators.from('postId')
@@ -80,7 +86,7 @@ try {
 
   // Do something with the result...
 } catch(error) {
-  if (error instanceof ValidationError) {
+  if (error instanceof FieldValidationError) {
     // Do something with error messages contained in `error.fields`
   }
 }
@@ -88,12 +94,14 @@ try {
 
 ## Example explained
 
-Poof library has two versions: [`poof`, and `poof-cast`](#the-difference-between-poof-and-poofcast). Both of them have three exports: the [`createProcessor` function](#createprocessorconfig), the [`decorators` object](#decorators) and the [`ValidationError` exception](#validationerror).
+Poof library has two versions: [`poof`, and `poof-cast`](#the-difference-between-poof-and-poofcast). Both of them have two exports: the [`createProcessor` function](#createprocessorconfig) and the [`decorators` object](#decorators).
 
 ```js
-// First import tools from Poof. The `poof-cast` version additionaly casts
-// data to String for assertions. More about it later.
-import { createProcessor, decorators, ValidationError } from 'poof-cast';
+// First import the FieldValidationError and also tools from Poof. The
+// `poof-cast` version additionaly casts data to String for assertions. More
+// about it later.
+import FieldValidationError from 'field-validation-error';
+import { createProcessor, decorators } from 'poof-cast';
 
 // The `createProcessor` function returns a processor based on the passed
 // config object.
@@ -147,7 +155,7 @@ try {
 
   // Do something with the result...
 } catch(error) {
-  if (error instanceof ValidationError) {
+  if (error instanceof FieldValidationError) {
     // Do something with error messages contained in `error.fields`
   }
 }
@@ -174,7 +182,7 @@ If instead `request.body` is:
   index: '-1',
 }
 ```
-then you'd get a `ValidationError` with the `fields` property equal to:
+then you'd get a `FieldValidationError` with the `fields` property equal to:
 ```js
 {
   _id: 'Missing post id',
@@ -198,13 +206,7 @@ Both `poof` and `poof-cast` export:
 
 Use this function with a config object to get a simple data processor.
 
-The processor either returns an output object or throws `ValidationError` if there was a validation error.
-
-### ValidationError
-
-An exception class that inherits from `Error`. This is thrown if the validation of any of the fields failed.
-
-Instances have one property - `fields`, which is an object containing error info for invalid fields.
+The processor either returns an output object or throws `FieldValidationError` if there was a validation error.
 
 ### decorators
 
@@ -259,6 +261,10 @@ When I started creating what later became Poof I didn't always want to have all 
 ### What about nested structures?
 
 This was supposed to be a simple lib, and I didn't have a need to support nested structures with it. I might do it someday and I'm open to suggestions/PRs.
+
+### Why is the field error exception a separate package?
+
+It makes sense to decouple the exception from the `poof` package because another package that handles this exception shouldn't be tied to `poof`. This problem is not contrived, it's an actual problem I had.
 
 ## Be careful with decorators!
 
