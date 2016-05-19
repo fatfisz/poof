@@ -1,6 +1,6 @@
 {
   "name": "poof",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0-rc3",
   "description": "Simple data processing with decorators",
   "main": "dist/index.js",
   "jsnext:main": "lib/index.js",
