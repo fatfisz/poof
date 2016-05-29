@@ -1,4 +1,4 @@
-import createProcessorDecorator from '../create_processor_decorator';
+import createProcessorDecorator from '../create_processor_decorator.js';
 
 
 export default (transformer) =>

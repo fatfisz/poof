@@ -22,7 +22,7 @@ describe('createProcessor', () => {
     FieldValidationError = sinon.spy();
 
     mockery.registerMock('field-validation-error', FieldValidationError);
-    mockery.registerMock('./store', Store);
+    mockery.registerMock('./store.js', Store);
 
     createProcessor = require('../tmp/create_processor');
   });

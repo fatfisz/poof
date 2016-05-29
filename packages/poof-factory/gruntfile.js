@@ -2,6 +2,7 @@
 
 const loadGruntTasks = require('load-grunt-tasks');
 const rollupPluginBabel = require('rollup-plugin-babel');
+const rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
 
 
 module.exports = function register(grunt) {
@@ -20,9 +21,11 @@ module.exports = function register(grunt) {
       all: {
         options: {
           external: [
+            'field-validation-error',
             'validator',
           ],
           plugins: [
+            rollupPluginNodeResolve({ extensions: [] }),
             rollupPluginBabel(),
           ],
           format: 'cjs',

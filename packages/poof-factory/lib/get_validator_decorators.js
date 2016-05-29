@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-import createValidatorDecorator from './create_validator_decorator';
+import createValidatorDecorator from './create_validator_decorator.js';
 
 
 export default function getValidatorDecorators(castToString) {

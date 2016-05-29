@@ -1,11 +1,11 @@
-import createProcessor from './create_processor';
-import assign from './decorators/assign';
-import fromDecorator from './decorators/from';
-import ignoreIf from './decorators/ignore_if';
-import ignoreIfUndefined from './decorators/ignore_if_undefined';
-import set from './decorators/set';
-import transform from './decorators/transform';
-import getValidatorDecorators from './get_validator_decorators';
+import createProcessor from './create_processor.js';
+import assign from './decorators/assign.js';
+import fromDecorator from './decorators/from.js';
+import ignoreIf from './decorators/ignore_if.js';
+import ignoreIfUndefined from './decorators/ignore_if_undefined.js';
+import set from './decorators/set.js';
+import transform from './decorators/transform.js';
+import getValidatorDecorators from './get_validator_decorators.js';
 
 
 export default function poofFactory(castToString) {

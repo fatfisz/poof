@@ -1,6 +1,6 @@
 import FieldValidationError from 'field-validation-error';
 
-import Store from './store';
+import Store from './store.js';
 
 
 export default function createProcessor(definition) {

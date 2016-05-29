@@ -18,7 +18,7 @@ describe('createValidatorDecorator', () => {
     mockery.registerMock('validator', {
       toString,
     });
-    mockery.registerMock('./create_processor_decorator', createProcessorDecorator);
+    mockery.registerMock('./create_processor_decorator.js', createProcessorDecorator);
 
     createValidatorDecorator = require('../tmp/create_validator_decorator');
   });

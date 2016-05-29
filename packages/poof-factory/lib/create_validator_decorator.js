@@ -1,6 +1,6 @@
 import { toString } from 'validator';
 
-import createProcessorDecorator from './create_processor_decorator';
+import createProcessorDecorator from './create_processor_decorator.js';
 
 
 export default function createValidatorDecorator(validatorFn, expected, castToString) {

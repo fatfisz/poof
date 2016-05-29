@@ -13,7 +13,7 @@ describe('decorators: ignoreIf', () => {
   beforeEach(() => {
     createProcessorDecorator = sinon.stub().returns(processorDecorator);
 
-    mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
+    mockery.registerMock('../create_processor_decorator.js', createProcessorDecorator);
 
     ignoreIf = require('../../tmp/decorators/ignore_if');
   });

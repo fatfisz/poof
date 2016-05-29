@@ -31,7 +31,7 @@ describe('getValidatorDecorators', () => {
     );
 
     mockery.registerMock('validator', validator);
-    mockery.registerMock('./create_validator_decorator', createValidatorDecorator);
+    mockery.registerMock('./create_validator_decorator.js', createValidatorDecorator);
 
     getValidatorDecorators = require('../tmp/get_validator_decorators');
   });
@@ -49,6 +49,7 @@ describe('getValidatorDecorators', () => {
     const result = getValidatorDecorators(castToString);
 
     should(createValidatorDecorator).have.callCount(12);
+
     should(createValidatorDecorator).be.calledWithExactly('contains', false, castToString);
     should(createValidatorDecorator).be.calledWithExactly('contains', true, castToString);
     should(createValidatorDecorator).be.calledWithExactly('equals', false, castToString);
@@ -65,17 +66,17 @@ describe('getValidatorDecorators', () => {
     should(result).be.eql({
       contains: 'contains - false',
       equals: 'equals - false',
-      matches: 'matches - false',
       isSomething1: 'isSomething1 - false',
       isSomething2: 'isSomething2 - false',
       isSomething3: 'isSomething3 - false',
+      matches: 'matches - false',
       not: {
         contains: 'contains - true',
         equals: 'equals - true',
-        matches: 'matches - true',
         isSomething1: 'isSomething1 - true',
         isSomething2: 'isSomething2 - true',
         isSomething3: 'isSomething3 - true',
+        matches: 'matches - true',
       },
     });
   });

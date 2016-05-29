@@ -15,7 +15,7 @@ describe('decorators: transform', () => {
   beforeEach(() => {
     createProcessorDecorator = sinon.stub().returns(processorDecorator);
 
-    mockery.registerMock('../create_processor_decorator', createProcessorDecorator);
+    mockery.registerMock('../create_processor_decorator.js', createProcessorDecorator);
 
     transform = require('../../tmp/decorators/transform');
 
