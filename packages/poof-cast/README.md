@@ -21,10 +21,14 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
   - [createProcessor(config)](#createprocessorconfig)
   - [decorators](#decorators)
     - [decorators.assert.method and decorators.assert.not.method](#decoratorsassertmethod-and-decoratorsassertnotmethod)
+    - [decorators.assert.hasType and decorators.assert.not.hasType](#decoratorsasserthastype-and-decoratorsassertnothastype)
+    - [decorators.assert.isInstanceOf and decorators.assert.not.isInstanceOf](#decoratorsassertisinstanceof-and-decoratorsassertnotisinstanceof)
     - [decorators.assign](#decoratorsassign)
+    - [decorators.filter(predicate)](#decoratorsfilterpredicate)
     - [decorators.from(key)](#decoratorsfromkey)
     - [decorators.ignoreIf(predicate)](#decoratorsignoreifpredicate)
     - [decorators.ignoreIfUndefined](#decoratorsignoreifundefined)
+    - [decorators.map(mapper)](#decoratorsmapmapper)
     - [decorators.set(value)](#decoratorssetvalue)
     - [decorators.transform(transformer)](#decoratorstransformtransformer)
 - [Some questions you might have](#some-questions-you-might-have)
@@ -224,9 +228,21 @@ So for example for `@decorators.assert.equals('Is different', 'expected')` the a
 
 `decorators.assert.not` works almost the same, only the validation fails if the function returns `true`.
 
+#### decorators.assert.hasType and decorators.assert.not.hasType
+
+An additional assertion function that performs the `typeof` check on the current value and the passed argument.
+
+#### decorators.assert.isInstanceOf and decorators.assert.not.isInstanceOf
+
+An additional assertion function that performs the `instanceof` check on the current value and the passed argument.
+
 #### decorators.assign
 
 Used to assign the processed value to the output object. When using, it's best to put this decorator last, because any further processing results won't be saved.
+
+#### decorators.filter(predicate)
+
+Filters the current value using `predicate`. The current value is assumed to be an array.
 
 #### decorators.from(key)
 
@@ -239,6 +255,10 @@ The predicate is called with the processed value. If the result is `true`, then 
 #### decorators.ignoreIfUndefined
 
 Sometimes you might want to process some data only if it's present. Use this decorator to avoid validation and transforming in case the processed value is `undefined`. It's equivalent to `decorators.ignoreIf((value) => typeof value === 'undefined')`.
+
+#### decorators.map(mapper)
+
+Maps the current value using `mapper`. The current value is assumed to be an array.
 
 #### decorators.set(value)
 
