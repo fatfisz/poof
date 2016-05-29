@@ -150,6 +150,12 @@ var assign = createProcessorDecorator(function (store, key) {
   store.setOutput(key, store.currentValue);
 });
 
+function filter (predicate) {
+  return createProcessorDecorator(function (store) {
+    store.currentValue = store.currentValue.filter(predicate);
+  });
+}
+
 function fromDecorator (key) {
   return createProcessorDecorator(function (store) {
     store.currentValue = store.getInput(key);
@@ -169,6 +175,12 @@ var ignoreIfUndefined = createProcessorDecorator(function (store) {
     return false;
   }
 });
+
+function map (mapper) {
+  return createProcessorDecorator(function (store) {
+    store.currentValue = store.currentValue.map(mapper);
+  });
+}
 
 function set (value) {
   return createProcessorDecorator(function (store) {
@@ -226,9 +238,11 @@ function poofFactory(castToString) {
     createProcessor: createProcessor,
     decorators: {
       assign: assign,
+      filter: filter,
       from: fromDecorator,
       ignoreIf: ignoreIf,
       ignoreIfUndefined: ignoreIfUndefined,
+      map: map,
       set: set,
       transform: transform,
       assert: getValidatorDecorators(castToString)

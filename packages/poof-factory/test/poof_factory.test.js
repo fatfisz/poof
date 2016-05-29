@@ -14,9 +14,11 @@ describe('Poof Factory', () => {
 
     mockery.registerMock('./create_processor.js', 'create_processor');
     mockery.registerMock('./decorators/assign.js', 'assign');
+    mockery.registerMock('./decorators/filter.js', 'filter');
     mockery.registerMock('./decorators/from.js', 'from');
     mockery.registerMock('./decorators/ignore_if.js', 'ignore_if');
     mockery.registerMock('./decorators/ignore_if_undefined.js', 'ignore_if_undefined');
+    mockery.registerMock('./decorators/map.js', 'map');
     mockery.registerMock('./decorators/set.js', 'set');
     mockery.registerMock('./decorators/transform.js', 'transform');
     mockery.registerMock('./get_validator_decorators.js', getValidatorDecorators);
@@ -42,9 +44,11 @@ describe('Poof Factory', () => {
       createProcessor: 'create_processor',
       decorators: {
         assign: 'assign',
+        filter: 'filter',
         from: 'from',
         ignoreIf: 'ignore_if',
         ignoreIfUndefined: 'ignore_if_undefined',
+        map: 'map',
         set: 'set',
         transform: 'transform',
         assert: 'validator_decorators',

@@ -1,8 +1,10 @@
 import createProcessor from './create_processor.js';
 import assign from './decorators/assign.js';
+import filter from './decorators/filter.js';
 import fromDecorator from './decorators/from.js';
 import ignoreIf from './decorators/ignore_if.js';
 import ignoreIfUndefined from './decorators/ignore_if_undefined.js';
+import map from './decorators/map.js';
 import set from './decorators/set.js';
 import transform from './decorators/transform.js';
 import getValidatorDecorators from './get_validator_decorators.js';
@@ -13,9 +15,11 @@ export default function poofFactory(castToString) {
     createProcessor,
     decorators: {
       assign,
+      filter,
       from: fromDecorator,
       ignoreIf,
       ignoreIfUndefined,
+      map,
       set,
       transform,
       assert: getValidatorDecorators(castToString),
