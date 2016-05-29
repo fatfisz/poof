@@ -194,6 +194,14 @@ function transform (transformer) {
   });
 }
 
+function hasType(value, type) {
+  return typeof value === type;
+}
+
+function isInstanceOf(value, type) {
+  return (typeof type === 'object' || typeof type === 'function') && type !== null && value instanceof type;
+}
+
 function createValidatorDecorator(validatorFn, expected, castToString) {
   return function (message) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -222,10 +230,18 @@ function getValidatorDecorators(castToString) {
     not: {}
   };
 
+  var validatorFunctions = [['hasType', hasType], ['isInstanceOf', isInstanceOf]];
+
   Object.keys(validator__default).filter(function (name) {
     return name === 'contains' || name === 'equals' || name === 'matches' || name.slice(0, 2) === 'is';
   }).forEach(function (validatorName) {
-    var validatorFn = validator__default[validatorName];
+    validatorFunctions.push([validatorName, validator__default[validatorName]]);
+  });
+
+  validatorFunctions.forEach(function (_ref) {
+    var validatorName = _ref[0];
+    var validatorFn = _ref[1];
+
     assert[validatorName] = createValidatorDecorator(validatorFn, false, castToString);
     assert.not[validatorName] = createValidatorDecorator(validatorFn, true, castToString);
   });

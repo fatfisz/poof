@@ -31,6 +31,8 @@ describe('getValidatorDecorators', () => {
     );
 
     mockery.registerMock('validator', validator);
+    mockery.registerMock('./assertions/has_type.js', 'has_type');
+    mockery.registerMock('./assertions/is_instance_of.js', 'is_instance_of');
     mockery.registerMock('./create_validator_decorator.js', createValidatorDecorator);
 
     getValidatorDecorators = require('../tmp/get_validator_decorators');
@@ -48,7 +50,12 @@ describe('getValidatorDecorators', () => {
   it('should return an appropriate object', () => {
     const result = getValidatorDecorators(castToString);
 
-    should(createValidatorDecorator).have.callCount(12);
+    should(createValidatorDecorator).have.callCount(16);
+
+    should(createValidatorDecorator).be.calledWithExactly('has_type', false, castToString);
+    should(createValidatorDecorator).be.calledWithExactly('has_type', true, castToString);
+    should(createValidatorDecorator).be.calledWithExactly('is_instance_of', false, castToString);
+    should(createValidatorDecorator).be.calledWithExactly('is_instance_of', true, castToString);
 
     should(createValidatorDecorator).be.calledWithExactly('contains', false, castToString);
     should(createValidatorDecorator).be.calledWithExactly('contains', true, castToString);
@@ -66,6 +73,8 @@ describe('getValidatorDecorators', () => {
     should(result).be.eql({
       contains: 'contains - false',
       equals: 'equals - false',
+      hasType: 'has_type - false',
+      isInstanceOf: 'is_instance_of - false',
       isSomething1: 'isSomething1 - false',
       isSomething2: 'isSomething2 - false',
       isSomething3: 'isSomething3 - false',
@@ -73,6 +82,8 @@ describe('getValidatorDecorators', () => {
       not: {
         contains: 'contains - true',
         equals: 'equals - true',
+        hasType: 'has_type - true',
+        isInstanceOf: 'is_instance_of - true',
         isSomething1: 'isSomething1 - true',
         isSomething2: 'isSomething2 - true',
         isSomething3: 'isSomething3 - true',
