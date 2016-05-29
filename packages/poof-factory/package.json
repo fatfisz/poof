@@ -1,6 +1,6 @@
 {
   "name": "poof-factory",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Simple data processing with decorators",
   "main": "dist/poof_factory.js",
   "jsnext:main": "lib/poof_factory.js",

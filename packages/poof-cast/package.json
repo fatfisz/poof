@@ -1,6 +1,6 @@
 {
   "name": "poof-cast",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Simple data processing with decorators",
   "main": "dist/index.js",
   "jsnext:main": "lib/index.js",
@@ -29,7 +29,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "poof-factory": "^2.1.0"
+    "poof-factory": "^2.1.1"
   },
   "devDependencies": {
     "eslint": "~2.9.0",
