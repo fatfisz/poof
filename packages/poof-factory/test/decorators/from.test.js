@@ -54,7 +54,6 @@ describe('decorators: from', () => {
     });
 
     it('should call `store.getInput` with appropriate arguments', () => {
-
       processor(store, key);
 
       should(getInput).be.calledOnce();
