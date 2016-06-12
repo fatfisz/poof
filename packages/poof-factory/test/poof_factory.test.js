@@ -14,6 +14,7 @@ describe('Poof Factory', () => {
 
     mockery.registerMock('./create_processor.js', 'create_processor');
     mockery.registerMock('./decorators/assign.js', 'assign');
+    mockery.registerMock('./decorators/assign_to.js', 'assign_to');
     mockery.registerMock('./decorators/filter.js', 'filter');
     mockery.registerMock('./decorators/from.js', 'from');
     mockery.registerMock('./decorators/ignore_if.js', 'ignore_if');
@@ -44,6 +45,7 @@ describe('Poof Factory', () => {
       createProcessor: 'create_processor',
       decorators: {
         assign: 'assign',
+        assignTo: 'assign_to',
         filter: 'filter',
         from: 'from',
         ignoreIf: 'ignore_if',

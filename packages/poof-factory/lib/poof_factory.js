@@ -1,5 +1,6 @@
 import createProcessor from './create_processor.js';
 import assign from './decorators/assign.js';
+import assignTo from './decorators/assign_to.js';
 import filter from './decorators/filter.js';
 import fromDecorator from './decorators/from.js';
 import ignoreIf from './decorators/ignore_if.js';
@@ -15,6 +16,7 @@ export default function poofFactory(castToString) {
     createProcessor,
     decorators: {
       assign,
+      assignTo,
       filter,
       from: fromDecorator,
       ignoreIf,

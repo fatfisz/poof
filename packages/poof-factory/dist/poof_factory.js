@@ -150,6 +150,12 @@ var assign = createProcessorDecorator(function (store, key) {
   store.setOutput(key, store.currentValue);
 });
 
+function assignTo (key) {
+  return createProcessorDecorator(function (store) {
+    store.setOutput(key, store.currentValue);
+  });
+}
+
 function filter (predicate) {
   return createProcessorDecorator(function (store) {
     store.currentValue = store.currentValue.filter(predicate);
@@ -254,6 +260,7 @@ function poofFactory(castToString) {
     createProcessor: createProcessor,
     decorators: {
       assign: assign,
+      assignTo: assignTo,
       filter: filter,
       from: fromDecorator,
       ignoreIf: ignoreIf,

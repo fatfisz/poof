@@ -22,6 +22,7 @@ It makes use of the awesome [validator](https://www.npmjs.com/package/validator)
     - [decorators.assert.hasType and decorators.assert.not.hasType](#decoratorsasserthastype-and-decoratorsassertnothastype)
     - [decorators.assert.isInstanceOf and decorators.assert.not.isInstanceOf](#decoratorsassertisinstanceof-and-decoratorsassertnotisinstanceof)
     - [decorators.assign](#decoratorsassign)
+    - [decorators.assignTo(key)](#decoratorsassigntokey)
     - [decorators.filter(predicate)](#decoratorsfilterpredicate)
     - [decorators.from(key)](#decoratorsfromkey)
     - [decorators.ignoreIf(predicate)](#decoratorsignoreifpredicate)
@@ -237,6 +238,10 @@ An additional assertion function that performs the `instanceof` check on the cur
 #### decorators.assign
 
 Used to assign the processed value to the output object. When using, it's best to put this decorator last, because any further processing results won't be saved.
+
+#### decorators.assignTo(key)
+
+Just like `decorators.assign`, but assigns to a property named after the `key` argument. Use sparingly, only when the output property name needs to be computed.
 
 #### decorators.filter(predicate)
 
